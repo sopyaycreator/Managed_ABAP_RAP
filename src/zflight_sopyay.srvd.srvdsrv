@@ -1,0 +1,6 @@
+@EndUserText.label: 'Flight Service'
+define service ZFlight_SoPyay {
+  expose Z_Connection_SOPYAY;
+  expose ZI_Flight_SoPyay_R;
+  expose ZI_Carrier_SoPyay_R;
+}
