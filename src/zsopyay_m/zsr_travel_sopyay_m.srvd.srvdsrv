@@ -1,0 +1,6 @@
+@EndUserText.label: 'Service Defination Managed'
+define service ZSR_TRAVEL_SOPYAY_M {
+  expose ZC_Travel_SoPyay_M;
+  expose ZC_BOOKING_SoPyay_M;
+  expose ZC_BOOKSUPPL_SoPyay_M;
+}

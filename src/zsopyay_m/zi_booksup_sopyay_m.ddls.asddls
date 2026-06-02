@@ -6,6 +6,7 @@ define view entity ZI_BOOKSUP_SoPyay_M
   as select from zbooksuppl_sopym
   association        to parent ZI_BOOKING_SoPyay_M as _Booking        on  $projection.TravelId  = _Booking.TravelId
                                                                       and $projection.BookingId = _Booking.BookingId
+  association [1..1] to ZI_SoPyay_M                as _Travel         on  $projection.TravelId = _Travel.TravelId
   association [1..1] to /DMO/I_Supplement          as _Supplement     on  $projection.SupplementId = _Supplement.SupplementID
   association [1..*] to /DMO/I_SupplementText      as _SupplementText on  $projection.SupplementId = _SupplementText.SupplementID
 {
@@ -17,6 +18,7 @@ define view entity ZI_BOOKSUP_SoPyay_M
       price                 as Price,
       currency_code         as CurrencyCode,
       last_changed_at       as LastChangedAt,
+      _Travel,
       _Booking,
       _Supplement,
       _SupplementText

@@ -7,8 +7,8 @@ define root view entity ZI_SoPyay_M
   composition [0..*] of ZI_BOOKING_SoPyay_M as _Booking
   association [0..1] to /DMO/I_Agency   as _Agency   on $projection.AgencyId = _Agency.AgencyID
   association [0..1] to /DMO/I_Customer as _Customer on $projection.CustomerId = _Customer.CustomerID
-  association [1..1] to I_Currency      as _Currency on $projection.CurrencyCode = _Currency.Currency
-  association [0..1] to /DMO/I_Overall_Status_VH as _Status on $projection.OverallStatus = _Status.OverallStatus
+  association [0..1] to I_Currency      as _Currency on $projection.CurrencyCode = _Currency.Currency
+  association [1..1] to /DMO/I_Overall_Status_VH as _Status on $projection.OverallStatus = _Status.OverallStatus
   
 {
   key travel_id       as TravelId,
