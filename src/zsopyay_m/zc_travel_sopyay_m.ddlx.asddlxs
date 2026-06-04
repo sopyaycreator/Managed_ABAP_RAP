@@ -19,12 +19,20 @@
 annotate view ZC_Travel_SoPyay_M with
 {
   @UI.facet: [{
-  id: 'Travel',
-  purpose: #STANDARD,
-  position: 10,
-  label: 'Travel',
-  type: #IDENTIFICATION_REFERENCE
-   }]
+      id: 'Travel',
+      purpose: #STANDARD,
+      position: 10,
+      label: 'Travel',
+      type: #IDENTIFICATION_REFERENCE
+       },
+   {
+      id: 'Booking',
+      purpose: #STANDARD,
+      position: 20,
+      label: 'Booking',
+      type: #LINEITEM_REFERENCE,
+      targetElement: '_Booking'
+    }]
 
 
   @UI.lineItem: [{ position: 10 }]
@@ -67,7 +75,8 @@ annotate view ZC_Travel_SoPyay_M with
   Description;
   @UI: {lineItem: [{ position: 70 }],
   selectionField: [{ position:40 }],
-  identification: [{ position: 70}]
+  identification: [{ position: 70}],
+  textArrangement: #TEXT_ONLY
   }
   @Search.defaultSearchElement: true
   @Consumption.valueHelpDefinition: [{ entity:{

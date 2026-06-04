@@ -1,0 +1,5 @@
+CLASS zcl_bp_bookingsopyay_m DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_sopyay_m.
+ENDCLASS.
+
+CLASS zcl_bp_bookingsopyay_m IMPLEMENTATION.
+ENDCLASS.
