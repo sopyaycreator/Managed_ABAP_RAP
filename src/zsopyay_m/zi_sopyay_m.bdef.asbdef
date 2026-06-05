@@ -69,6 +69,7 @@ persistent table zbooksuppl_sopym
 lock dependent by _Travel
 authorization dependent by _Travel
 etag master LastChangedAt
+early numbering
 {
   update;
   delete;
