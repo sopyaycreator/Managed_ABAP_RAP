@@ -3,8 +3,18 @@ CLASS lhc_ZI_SoPyay_M DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
       IMPORTING keys REQUEST requested_authorizations FOR ZI_SoPyay_M RESULT result.
+    METHODS accepttravel FOR MODIFY
+      IMPORTING keys FOR ACTION zi_sopyay_m~accepttravel RESULT result.
+
+    METHODS copytravel FOR MODIFY
+      IMPORTING keys FOR ACTION zi_sopyay_m~copytravel.
+
+    METHODS rejecttravel FOR MODIFY
+      IMPORTING keys FOR ACTION zi_sopyay_m~rejecttravel RESULT result.
+
     METHODS earlynumbering_cba_booking FOR NUMBERING
-      IMPORTING entities FOR CREATE zi_sopyay_m\_booking.
+      IMPORTING entities
+                  FOR CREATE zi_sopyay_m\_booking.
 
     METHODS earlynumbering_create FOR NUMBERING
       IMPORTING entities
@@ -73,6 +83,66 @@ CLASS lhc_ZI_SoPyay_M IMPLEMENTATION.
 
   ENDMETHOD.
   METHOD earlynumbering_cba_Booking.
+
+    DATA: lv_max_booking TYPE /dmo/booking_id.
+
+    READ ENTITIES OF ZI_SoPyay_M IN LOCAL MODE
+      ENTITY ZI_SoPyay_M BY \_Booking
+      FROM CORRESPONDING #( entities )
+      LINK DATA(lt_link_data).
+
+    LOOP AT entities ASSIGNING FIELD-SYMBOL(<ls_group_entity>)
+    GROUP BY <ls_group_entity>-TravelId.
+
+      lv_max_booking = REDUCE #( INIT lv_max = CONV /dmo/booking_id( '0' )
+                                FOR ls_link IN lt_link_data USING KEY entity
+                                WHERE ( source-TravelId = <ls_group_entity>-TravelId )
+                                NEXT lv_max = COND /dmo/booking_id( WHEN lv_max < ls_link-target-BookingId
+                                                                    THEN ls_link-target-BookingId
+                                                                    ELSE lv_max )
+                                ).
+      lv_max_booking = REDUCE #( INIT lv_max = lv_max_booking
+                                FOR ls_entity IN entities USING KEY entity
+                                  WHERE ( TravelId = <ls_group_entity>-TravelId )
+                                  FOR ls_booking IN ls_entity-%target
+                                  NEXT lv_max = COND /dmo/booking_id( WHEN lv_max < ls_booking-BookingId
+                                                                    THEN ls_booking-BookingId
+                                                                    ELSE lv_max )
+
+
+
+      ).
+      LOOP AT entities ASSIGNING FIELD-SYMBOL(<ls_entities>)
+      USING KEY entity
+      WHERE TravelId = <ls_group_entity>-TravelId.
+        LOOP AT <ls_entities>-%target ASSIGNING FIELD-SYMBOL(<ls_booking>).
+
+          IF <ls_booking>-BookingId IS INITIAL.
+
+            lv_max_booking += 10.
+            APPEND CORRESPONDING  #( <ls_booking> ) TO
+            mapped-zi_booking_sopyay_m ASSIGNING FIELD-SYMBOL(<ls_new_map_book>).
+
+            <ls_new_map_book>-BookingId = lv_max_booking.
+
+          ENDIF.
+
+        ENDLOOP.
+      ENDLOOP.
+
+
+
+    ENDLOOP.
+
+  ENDMETHOD.
+
+  METHOD acceptTravel.
+  ENDMETHOD.
+
+  METHOD copyTravel.
+  ENDMETHOD.
+
+  METHOD rejectTravel.
   ENDMETHOD.
 
 ENDCLASS.
